@@ -1,0 +1,46 @@
+DomusCare — Deploy backend (Neon + Render)
+==========================================
+
+Architettura
+------------
+  Sito statico (Vercel)  →  API (Render)  →  PostgreSQL (Neon)
+
+Passo 1 — Neon (database)
+---------------------------
+1. Vai su https://console.neon.tech e crea un progetto (es. "domuscare").
+2. Apri SQL Editor e incolla il contenuto di `db/schema.sql`, poi esegui.
+3. Copia la connection string (formato postgresql://...?sslmode=require).
+
+Passo 2 — Render (API)
+----------------------
+1. Pusha questo repo su GitHub.
+2. Su https://render.com → New → Blueprint e collega il repo (usa `render.yaml`),
+   oppure New Web Service manuale:
+   - Root Directory: `backend`
+   - Build: `npm install`
+   - Start: `npm start`
+3. Variabili d'ambiente su Render:
+   - DATABASE_URL = (connection string Neon)
+   - CORS_ORIGIN = https://domuscaresito.vercel.app
+4. Dopo il deploy, copia l'URL pubblico (es. https://domuscare-api.onrender.com).
+5. Verifica: GET https://TUO-URL/health → deve rispondere {"status":"ok","db":"connected"}
+
+Passo 3 — Vercel (frontend)
+---------------------------
+1. In `config.js` imposta:
+     API_URL: 'https://domuscare-api.onrender.com'
+2. Rideploy su Vercel (push su GitHub o `npx vercel deploy --prod`).
+
+Sviluppo locale
+---------------
+1. Copia `backend/.env.example` in `backend/.env` e inserisci DATABASE_URL.
+2. `cd backend && npm install && npm run db:init`
+3. `npm run dev` (API su http://localhost:3001)
+4. In `config.js` usa `API_URL: 'http://localhost:3001'`
+5. Servi il sito con un server statico locale (es. Live Server su index.html).
+
+Endpoint API
+------------
+  POST /api/contact   — form Contattaci
+  POST /api/triage    — email + risposte quiz Triage
+  GET  /health        — stato servizio e DB
