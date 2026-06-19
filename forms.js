@@ -10,10 +10,8 @@ function selectTriageAnswer(field, value) {
 
 function getApiBase() {
   const url = window.DOMUSCARE_CONFIG?.API_URL?.trim();
-  if (!url) {
-    throw new Error('API non configurata. Imposta DOMUSCARE_CONFIG.API_URL in config.js');
-  }
-  return url.replace(/\/$/, '');
+  if (url) return url.replace(/\/$/, '');
+  return '';
 }
 
 async function apiPost(path, body) {

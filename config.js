@@ -1,5 +1,5 @@
-// Dopo il deploy su Render, imposta l'URL dell'API qui.
-// Esempio: API_URL: 'https://domuscare-api.onrender.com'
+// L'API gira sullo stesso dominio Vercel (vedi /api). Lascia vuoto per same-origin.
+// Per sviluppo locale con backend separato: API_URL: 'http://localhost:3001'
 window.DOMUSCARE_CONFIG = {
   API_URL: '',
 };
