@@ -1,4 +1,7 @@
-const { Pool } = require('pg');
+const ws = require('ws');
+const { Pool, neonConfig } = require('@neondatabase/serverless');
+
+neonConfig.webSocketConstructor = ws;
 
 let pool;
 
@@ -7,14 +10,7 @@ function getPool() {
     if (!process.env.DATABASE_URL) {
       throw new Error('DATABASE_URL non configurata');
     }
-    pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_URL.includes('localhost')
-        ? false
-        : { rejectUnauthorized: false },
-      connectionTimeoutMillis: 10000,
-      max: 2,
-    });
+    pool = new Pool({ connectionString: process.env.DATABASE_URL });
   }
   return pool;
 }
