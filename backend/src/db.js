@@ -12,6 +12,8 @@ function getPool() {
       ssl: process.env.DATABASE_URL.includes('localhost')
         ? false
         : { rejectUnauthorized: false },
+      connectionTimeoutMillis: 10000,
+      max: 2,
     });
   }
   return pool;
